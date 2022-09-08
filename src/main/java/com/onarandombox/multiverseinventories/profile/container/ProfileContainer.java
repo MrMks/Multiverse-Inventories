@@ -60,6 +60,8 @@ public interface ProfileContainer {
      */
     void removeAllPlayerData(OfflinePlayer player);
 
+    void unloadAllPlayerData(OfflinePlayer player);
+
     /**
      * Removes the profile data for a specific type of profile in this profile container.
      *

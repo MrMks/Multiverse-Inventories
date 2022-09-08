@@ -24,6 +24,7 @@ import org.bukkit.event.player.*;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.PluginEnableEvent;
+import org.bukkit.event.world.WorldUnloadEvent;
 import org.bukkit.inventory.InventoryHolder;
 import uk.co.tggl.pluckerpluck.multiinv.MultiInv;
 
@@ -154,6 +155,8 @@ public class InventoriesListener implements Listener {
                     inventories.getWorldProfileContainerStore().getContainer(world).getPlayerData(player)));
             inventories.getData().setLoadOnLogin(player.getName(), true);
         }
+        inventories.getGroupProfileContainerStore().unloadAllProfile(event.getPlayer());
+        inventories.getWorldProfileContainerStore().unloadAllProfile(event.getPlayer());
     }
 
     private void verifyCorrectWorld(Player player, String world, GlobalProfile globalProfile) {
@@ -426,6 +429,11 @@ public class InventoriesListener implements Listener {
         Logging.finest("Disallowing item or inventory holding %s to go from world %s to world %s since these" +
                         "worlds do not share inventories", entity, fromWorld.getName(), toWorld.getName());
         event.setCancelled(true);
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onWorldUnload(WorldUnloadEvent event) {
+        inventories.getWorldProfileContainerStore().removeContainer(event.getWorld().getName());
     }
 }
 

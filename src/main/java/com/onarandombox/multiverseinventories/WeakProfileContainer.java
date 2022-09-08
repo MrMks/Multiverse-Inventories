@@ -1,27 +1,27 @@
 package com.onarandombox.multiverseinventories;
 
 import com.dumptruckman.minecraft.util.Logging;
-import com.onarandombox.multiverseinventories.profile.ProfileDataSource;
-import com.onarandombox.multiverseinventories.profile.WorldGroupManager;
-import com.onarandombox.multiverseinventories.profile.ProfileTypes;
+import com.onarandombox.multiverseinventories.profile.*;
 import com.onarandombox.multiverseinventories.profile.container.ContainerType;
-import com.onarandombox.multiverseinventories.profile.PlayerProfile;
 import com.onarandombox.multiverseinventories.profile.container.ProfileContainer;
-import com.onarandombox.multiverseinventories.profile.ProfileType;
 import com.onarandombox.multiverseinventories.profile.container.ProfileContainerStore;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.WeakHashMap;
 
 /**
  * Implementation of ProfileContainer using WeakHashMaps to keep memory usage to a minimum.
  */
 final class WeakProfileContainer implements ProfileContainer {
 
-    private Map<String, Map<ProfileType, PlayerProfile>> playerData = new WeakHashMap<>();
+    /**
+     * WeakHashMap is a weak key strong value map, so weakHashMap is useless here if the key is a string.
+     * Also, HashMap has better performance on java 8, so i change it to a hashMap
+     * And, other changes are mainly to unload data from this map.
+     */
+    private Map<String, Map<ProfileType, PlayerProfile>> playerData = new HashMap<>();
     private final MultiverseInventories inventories;
     private final String name;
     private final ContainerType type;
@@ -92,6 +92,11 @@ final class WeakProfileContainer implements ProfileContainer {
     public void removeAllPlayerData(OfflinePlayer player) {
         this.getPlayerData(player.getName()).clear();
         this.getDataSource().removePlayerData(getContainerType(), getContainerName(), null, player.getName());
+    }
+
+    @Override
+    public void unloadAllPlayerData(OfflinePlayer player) {
+        playerData.remove(player.getName());
     }
 
     @Override

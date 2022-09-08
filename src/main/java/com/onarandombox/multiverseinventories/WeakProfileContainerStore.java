@@ -3,13 +3,14 @@ package com.onarandombox.multiverseinventories;
 import com.onarandombox.multiverseinventories.profile.container.ContainerType;
 import com.onarandombox.multiverseinventories.profile.container.ProfileContainer;
 import com.onarandombox.multiverseinventories.profile.container.ProfileContainerStore;
+import org.bukkit.OfflinePlayer;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.WeakHashMap;
 
 final class WeakProfileContainerStore implements ProfileContainerStore {
 
-    private final Map<String, ProfileContainer> containers = new WeakHashMap<>();
+    private final Map<String, ProfileContainer> containers = new HashMap<>();
 
     private final MultiverseInventories inventories;
     private final ContainerType containerType;
@@ -29,6 +30,11 @@ final class WeakProfileContainerStore implements ProfileContainerStore {
     }
 
     @Override
+    public void removeContainer(String containerName) {
+        this.containers.remove(containerName);
+    }
+
+    @Override
     public ProfileContainer getContainer(String containerName) {
         ProfileContainer container = this.containers.get(containerName.toLowerCase());
         if (container == null) {
@@ -36,6 +42,13 @@ final class WeakProfileContainerStore implements ProfileContainerStore {
             addContainer(container);
         }
         return container;
+    }
+
+    @Override
+    public void unloadAllProfile(OfflinePlayer player) {
+        for (ProfileContainer pc : containers.values()) {
+            pc.removeAllPlayerData(player);
+        }
     }
 }
 
