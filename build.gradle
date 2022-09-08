@@ -68,15 +68,22 @@ dependencies {
         exclude group: 'org.bukkit'
     }
     compileOnly 'me.drayshak:WorldInventories:1.0.2'
+    compileOnly files('sample/Multiverse-Inventories-2.5.0.jar')
 }
 
 group = 'com.onarandombox.multiverseinventories'
-version = '2.5.1-SNAPSHOT'
+version = '2.5.1'
 description = 'Multiverse-Inventories'
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 
 java {
     withSourcesJar()
+}
+
+processResources {
+    filesMatching('plugin.yml') {
+        expand 'version': version
+    }
 }
 
 publishing {
@@ -90,3 +97,8 @@ publishing {
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
+
+jar {
+    archiveClassifier.set('thirdparty')
+}
+sourcesJar.archiveClassifier.set('thirdparty-sources')
