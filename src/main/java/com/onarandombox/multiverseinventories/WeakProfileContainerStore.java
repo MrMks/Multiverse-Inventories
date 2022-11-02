@@ -47,7 +47,7 @@ final class WeakProfileContainerStore implements ProfileContainerStore {
     @Override
     public void unloadAllProfile(OfflinePlayer player) {
         for (ProfileContainer pc : containers.values()) {
-            pc.removeAllPlayerData(player);
+            pc.unloadAllPlayerData(player);
         }
     }
 }
