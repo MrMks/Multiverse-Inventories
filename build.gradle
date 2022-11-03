@@ -33,7 +33,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT'
+    implementation 'org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT'
     shade ('com.dumptruckman.minecraft:Logging:1.0.9') {
         exclude group: 'org.bukkit'
         exclude group: 'junit'
@@ -44,9 +44,9 @@ dependencies {
     }
     shade 'com.dumptruckman.minecraft:JsonConfiguration:1.1'
 
-    testImplementation 'org.powermock:powermock-module-junit4:1.4.9'
-    testImplementation 'org.powermock:powermock-api-easymock:1.4.9'
-    testImplementation 'org.powermock:powermock-api-mockito:1.4.9'
+    testImplementation 'org.powermock:powermock-module-junit4:1.7.1'
+    testImplementation 'org.powermock:powermock-api-easymock:1.7.1'
+    testImplementation 'org.powermock:powermock-api-mockito:1.7.1'
     testImplementation 'org.easymock:easymock:3.0'
 
     compileOnly ('com.onarandombox.multiversecore:Multiverse-Core:2.5.0') {

@@ -10,7 +10,7 @@ package com.onarandombox.multiverseinventories.util;
 import org.bukkit.WorldCreator;
 import org.mockito.ArgumentMatcher;
 
-public class WorldCreatorMatcher extends ArgumentMatcher<WorldCreator> {
+public class WorldCreatorMatcher implements ArgumentMatcher<WorldCreator> {
     private WorldCreator worldCreator;
     private boolean careAboutSeeds = false;
     private boolean careAboutGenerators = false;
@@ -28,7 +28,7 @@ public class WorldCreatorMatcher extends ArgumentMatcher<WorldCreator> {
         this.careAboutGenerators = doICare;
     }
 
-    public boolean matches(Object creator) {
+    public boolean matches(WorldCreator creator) {
         Util.log("Checking world creators.");
         if (creator == null) {
             Util.log("The given creator was null, but I was checking: " + this.worldCreator.name());

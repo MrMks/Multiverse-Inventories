@@ -744,8 +744,18 @@ public class MockPlayer implements Player {
     }
 
     @Override
+    public void hidePlayer(Plugin plugin, Player player) {
+
+    }
+
+    @Override
     public void showPlayer(Player player) {
         //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void showPlayer(Plugin plugin, Player player) {
+
     }
 
     @Override
@@ -877,16 +887,6 @@ public class MockPlayer implements Player {
 
     @Override
     public Location getEyeLocation() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public Block getTargetBlock(HashSet<Byte> bytes, int i) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public List<Block> getLastTwoTargetBlocks(HashSet<Byte> bytes, int i) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
