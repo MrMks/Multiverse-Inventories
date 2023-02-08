@@ -474,7 +474,11 @@ class FlatFileProfileDataSource implements ProfileDataSource {
         if (section == null) {
             section = playerData.createSection("playerData");
         }
-        return deserializeGlobalProfile(playerName, playerUUID, convertSection(section));
+        GlobalProfile profile = deserializeGlobalProfile(playerName, playerUUID, convertSection(section));
+        // cache the file configuration, there's no second thread will
+        // save player's global profile, so it should be safe to do this.
+        profile.setFile(playerData);
+        return profile;
     }
 
     private GlobalProfile deserializeGlobalProfile(String playerName, UUID playerUUID,
@@ -484,7 +488,7 @@ class FlatFileProfileDataSource implements ProfileDataSource {
             if (key.equalsIgnoreCase(DataStrings.PLAYER_LAST_WORLD)) {
                 globalProfile.setLastWorld(playerData.get(key).toString());
             } else if (key.equalsIgnoreCase(DataStrings.PLAYER_SHOULD_LOAD)) {
-                globalProfile.setLoadOnLogin(Boolean.valueOf(playerData.get(key).toString()));
+                globalProfile.setLoadOnLogin(Boolean.parseBoolean(playerData.get(key).toString()));
             } else if (key.equalsIgnoreCase(DataStrings.PLAYER_LAST_KNOWN_NAME)) {
                 globalProfile.setLastKnownName(playerData.get(key).toString());
             }
@@ -504,9 +508,16 @@ class FlatFileProfileDataSource implements ProfileDataSource {
             e.printStackTrace();
             return false;
         }
-        FileConfiguration playerData = this.waitForConfigHandle(playerFile);
+        // in this way, we are no longer need to wait io thread
+        // finishing it's all tasks before we can get the target file.
+        // usually means a better performance.
+        FileConfiguration playerData = globalProfile.getFile();
+        if (playerData == null) {
+            playerData = this.waitForConfigHandle(playerFile);
+        }
         playerData.createSection("playerData", serializeGlobalProfile(globalProfile));
         try {
+            // save global profile will be executed on main thread as there's no huge data contained.
             playerData.save(playerFile);
         } catch (IOException e) {
             Logging.severe("Could not save global data for player: " + globalProfile.getPlayerName());

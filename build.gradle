@@ -33,7 +33,8 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT'
+    compileOnly 'org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT'
+    testImplementation 'org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT'
     shade ('com.dumptruckman.minecraft:Logging:1.0.9') {
         exclude group: 'org.bukkit'
         exclude group: 'junit'
@@ -80,7 +81,7 @@ dependencies {
 }
 
 group = 'com.onarandombox.multiverseinventories'
-version = '2.5.2'
+version = '2.5.3'
 description = 'Multiverse-Inventories'
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 

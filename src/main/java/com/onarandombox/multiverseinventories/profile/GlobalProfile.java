@@ -1,6 +1,7 @@
 package com.onarandombox.multiverseinventories.profile;
 
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.UUID;
 
@@ -37,6 +38,7 @@ public final class GlobalProfile {
     private String lastWorld = null;
     private String lastKnownName;
     private boolean loadOnLogin = false;
+    private FileConfiguration file;
 
     private GlobalProfile(String name, UUID uuid) {
         this.name = name;
@@ -117,5 +119,13 @@ public final class GlobalProfile {
      */
     public void setLastWorld(String world) {
         this.lastWorld = world;
+    }
+
+    public FileConfiguration getFile() {
+        return file;
+    }
+
+    public void setFile(FileConfiguration conf) {
+        file = conf;
     }
 }
